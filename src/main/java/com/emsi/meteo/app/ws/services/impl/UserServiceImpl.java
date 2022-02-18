@@ -3,6 +3,7 @@ package com.emsi.meteo.app.ws.services.impl;
 import com.emsi.meteo.app.ws.shared.Utils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.emsi.meteo.app.ws.entities.UserEntity;
@@ -18,6 +19,8 @@ public class UserServiceImpl implements UserService{
 	UserRepository userRepository;
 	@Autowired
 	Utils utils;
+	@Autowired
+	BCryptPasswordEncoder bCryptPasswordEncoder;
 	@Override
 	public UserDto createUser(UserDto user) {
 		UserEntity checkUser = userRepository.findByEmail(user.getEmail());
@@ -25,7 +28,7 @@ public class UserServiceImpl implements UserService{
 		UserEntity userEntity = new UserEntity();
 		
 		BeanUtils.copyProperties(user, userEntity);
-		userEntity.setEncryptedPassword("test");
+		userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		userEntity.setUserId(utils.generateStringId(32));
 
 		
