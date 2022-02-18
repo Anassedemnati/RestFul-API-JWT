@@ -1,5 +1,6 @@
 package com.emsi.meteo.app.ws.services.impl;
 
+import com.emsi.meteo.app.ws.shared.Utils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ public class UserServiceImpl implements UserService{
 	
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	Utils utils;
 	@Override
 	public UserDto createUser(UserDto user) {
 		UserEntity checkUser = userRepository.findByEmail(user.getEmail());
@@ -23,7 +26,7 @@ public class UserServiceImpl implements UserService{
 		
 		BeanUtils.copyProperties(user, userEntity);
 		userEntity.setEncryptedPassword("test");
-		userEntity.setUserId("1");
+		userEntity.setUserId(utils.generateStringId(32));
 
 		
 		UserEntity newUser = userRepository.save(userEntity);
