@@ -25,7 +25,7 @@ protected void configure(HttpSecurity http) throws Exception{
             .cors().and()//ENABE CORS TO COMUNICATE WTITH 2 SERVERS
             .csrf().disable()//DESACTIVE CSRF IN FORMS CUZ WE HAVE API
             .authorizeRequests()
-            .antMatchers(HttpMethod.POST,"/users").permitAll()//ALLOW ONLY HTTP POST ON /USERS
+            .antMatchers(HttpMethod.POST,SecurityConstants.SIGN_IN_URL).permitAll()//ALLOW ONLY HTTP POST ON /USERS
             .anyRequest().authenticated();
 
 }
