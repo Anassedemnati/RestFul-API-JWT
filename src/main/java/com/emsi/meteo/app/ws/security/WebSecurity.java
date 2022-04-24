@@ -27,10 +27,14 @@ protected void configure(HttpSecurity http) throws Exception{
             .authorizeRequests()
             .antMatchers(HttpMethod.POST,SecurityConstants.SIGN_UP_URL).permitAll()//ALLOW ONLY HTTP POST ON /USERS
             .anyRequest().authenticated()
-            .and().addFilter(new AuthenticationFilter(authenticationManager()))
-    ;
+            .and().addFilter(getAuthenticationFilter());
+    }
+    protected AuthenticationFilter getAuthenticationFilter() throws Exception {
+        final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager());
+        filter.setFilterProcessesUrl("/users/login"); //Override LOGIN URL of App
+        return filter;
+    }
 
-}
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
