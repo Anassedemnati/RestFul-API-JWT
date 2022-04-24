@@ -1,11 +1,13 @@
 package com.emsi.meteo.app.ws.security;
 
+import com.emsi.meteo.app.ws.SpringApplicationContext;
 import com.emsi.meteo.app.ws.requests.UserLoginRequest;
 import com.emsi.meteo.app.ws.services.UserService;
 import com.emsi.meteo.app.ws.shared.dto.UserDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
+
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationFilter(AuthenticationManager authenticationManager) {
@@ -57,11 +61,15 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SecurityConstants.TOKEN_SECRET )
                 .compact();
+        //recupere lobjet de class userServiceImpl avec SpringApplicationContext
+        UserService userService = (UserService) SpringApplicationContext.getBean("userServiceImpl");
 
-
+        //en doit utuliser le context pour utuliser un objet nimport ou dans lapplication
+         UserDto userDto= userService.getUser(userName); //recuperation de l'utilisateur avec avce service
 
         res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
-        //res.addHeader("user_id", userDto.getUserId());
+        //send public user id like response
+        res.addHeader("user_id", userDto.getUserId());
 
     }
 
