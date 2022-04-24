@@ -5,11 +5,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
-@Data
 @Entity(name = "user")
+@Data @AllArgsConstructor @NoArgsConstructor
 public class UserEntity implements Serializable {
 	
 	private static final long serialVersionUID = -2516375549986814526L;

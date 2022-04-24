@@ -26,7 +26,9 @@ protected void configure(HttpSecurity http) throws Exception{
             .csrf().disable()//DESACTIVE CSRF IN FORMS CUZ WE HAVE API
             .authorizeRequests()
             .antMatchers(HttpMethod.POST,SecurityConstants.SIGN_UP_URL).permitAll()//ALLOW ONLY HTTP POST ON /USERS
-            .anyRequest().authenticated();
+            .anyRequest().authenticated()
+            .and().addFilter(new AuthenticationFilter(authenticationManager()))
+    ;
 
 }
     @Override
