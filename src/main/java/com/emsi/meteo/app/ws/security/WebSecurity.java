@@ -27,8 +27,11 @@ protected void configure(HttpSecurity http) throws Exception{
             .authorizeRequests()
             .antMatchers(HttpMethod.POST,SecurityConstants.SIGN_UP_URL).permitAll()//ALLOW ONLY HTTP POST ON /USERS
             .anyRequest().authenticated()
-            .and().addFilter(getAuthenticationFilter());
+            .and().addFilter(getAuthenticationFilter())
+            .addFilter(new AuthorizationFilter(authenticationManager()));
+
     }
+
     protected AuthenticationFilter getAuthenticationFilter() throws Exception {
         final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager());
         filter.setFilterProcessesUrl("/users/login"); //Override LOGIN URL of App
