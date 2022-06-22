@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService{
 		UserEntity newUser = userRepository.save(userEntity);
 		
 		UserDto userDto = new UserDto();
-		
+
 		BeanUtils.copyProperties(newUser, userDto);
 		
 		return userDto;
@@ -57,16 +57,35 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public UserDto getUserByUserId(String userId) {
+
 		UserEntity userEntity = userRepository.findByUserId(userId);
+
 		if (userEntity == null) throw new UsernameNotFoundException(userId);
+
 		UserDto userDto = new UserDto();
+
 		BeanUtils.copyProperties(userEntity,userDto);//copier les donne de userEntity to userDto
+
 		return userDto;
 	}
 
 	@Override
-	public UserDto updateUser(UserDto userDto) {
-		return null;
+	public UserDto updateUser(String userId,UserDto userDto) {
+
+		UserEntity userEntity = userRepository.findByUserId(userId);
+
+		if (userEntity == null) throw new UsernameNotFoundException(userId);
+
+		userEntity.setFirstName(userDto.getFirstName());
+		userEntity.setLastName(userDto.getLastName());
+
+		UserEntity userUpdated = userRepository.save(userEntity);
+
+		UserDto user = new UserDto();
+
+		BeanUtils.copyProperties(userUpdated,user);//copier les donne de userEntity to userDto
+
+		return user;
 	}
 
 	@Override

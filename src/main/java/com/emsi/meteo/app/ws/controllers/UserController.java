@@ -48,7 +48,7 @@ public class UserController {
 
 		BeanUtils.copyProperties(userRequest, userDto);//COUCHE REPRESONTATION
 
-		UserDto updateUser = userService.updateUser(userDto);//COUCHE SERVICE
+		UserDto updateUser = userService.updateUser(id,userDto);//COUCHE SERVICE
 
 		UserResponse userResponse = new UserResponse();
 
