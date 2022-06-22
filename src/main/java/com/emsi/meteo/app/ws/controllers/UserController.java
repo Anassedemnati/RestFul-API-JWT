@@ -2,6 +2,8 @@ package com.emsi.meteo.app.ws.controllers;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.emsi.meteo.app.ws.requests.UserRequest;
@@ -29,7 +31,7 @@ public class UserController {
 
 
 	@PostMapping
-	public UserResponse createUser(@RequestBody UserRequest userRequest) {
+	public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest) {
 		UserDto userDto = new UserDto(); 
 		BeanUtils.copyProperties(userRequest, userDto);//COUCHE REPRESONTATION
 		
@@ -39,11 +41,11 @@ public class UserController {
 		
 		BeanUtils.copyProperties(createUser, userResponse);
 		
-		return userResponse; // RETOURNER LES INFORMATION VOULU DE LUTULISATEUR 
+		return new  ResponseEntity<UserResponse>(userResponse,HttpStatus.CREATED) ; // RETOURNER LES INFORMATION VOULU DE LUTULISATEUR avec status 201
 	}
 	
 	@PutMapping(path = "/{id}")
-	public UserResponse updateUser(@PathVariable String id,@RequestBody UserRequest userRequest) {
+	public ResponseEntity<UserResponse> updateUser(@PathVariable String id,@RequestBody UserRequest userRequest) {
 		UserDto userDto = new UserDto();
 
 		BeanUtils.copyProperties(userRequest, userDto);//COUCHE REPRESONTATION
@@ -54,11 +56,14 @@ public class UserController {
 
 		BeanUtils.copyProperties(updateUser, userResponse);
 
-		return userResponse; // RETOURNER LES INFORMATION VOULU DE LUTULISATEUR
+		return new  ResponseEntity<UserResponse>(userResponse,HttpStatus.ACCEPTED); // RETOURNER LES INFORMATION VOULU DE LUTULISATEUR avec status 202
 	}
-	@DeleteMapping
-	public String deleteUser() {
-		return "delete user !";
+	@DeleteMapping(path = "/{id}")
+	public ResponseEntity<Object> deleteUser(@PathVariable String id) {
+
+		userService.deleteUser(id);
+
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
 
