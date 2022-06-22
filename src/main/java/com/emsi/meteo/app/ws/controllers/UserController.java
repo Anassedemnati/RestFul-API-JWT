@@ -42,9 +42,19 @@ public class UserController {
 		return userResponse; // RETOURNER LES INFORMATION VOULU DE LUTULISATEUR 
 	}
 	
-	@PutMapping
-	public String updateUser() {
-		return " user updated !";
+	@PutMapping(path = "/{id}")
+	public UserResponse updateUser(@PathVariable String id,@RequestBody UserRequest userRequest) {
+		UserDto userDto = new UserDto();
+
+		BeanUtils.copyProperties(userRequest, userDto);//COUCHE REPRESONTATION
+
+		UserDto updateUser = userService.updateUser(userDto);//COUCHE SERVICE
+
+		UserResponse userResponse = new UserResponse();
+
+		BeanUtils.copyProperties(updateUser, userResponse);
+
+		return userResponse; // RETOURNER LES INFORMATION VOULU DE LUTULISATEUR
 	}
 	@DeleteMapping
 	public String deleteUser() {
