@@ -3,6 +3,9 @@ package com.emsi.meteo.app.ws.services.impl;
 import com.emsi.meteo.app.ws.shared.Utils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -99,8 +102,14 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public List<UserDto> getUsers(int page, int limit) {
-
-		return null;
+		List<UserDto> userDtoList = new ArrayList<>();
+		Page<UserEntity> usersPage = userRepository.findAll(PageRequest.of(page, limit));
+		usersPage.getContent().forEach(userEntity -> {
+			UserDto userDto = new UserDto();
+			BeanUtils.copyProperties(userEntity,userDto);
+			userDtoList.add(userDto);
+		});
+		return userDtoList;
 	}
 
 	@Override
