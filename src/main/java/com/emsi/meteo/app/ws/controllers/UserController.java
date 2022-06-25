@@ -1,5 +1,6 @@
 package com.emsi.meteo.app.ws.controllers;
 
+import com.emsi.meteo.app.ws.exceptions.UserException;
 import com.emsi.meteo.app.ws.responses.ErrorMessages;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class UserController {
 			consumes =  {MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_JSON_VALUE},
 			produces =  {MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest) throws Exception {
-		if (userRequest.getFirstName().isEmpty()) throw new Exception(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
+		if (userRequest.getFirstName().isEmpty()) throw new UserException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 		UserDto userDto = new UserDto(); 
 		BeanUtils.copyProperties(userRequest, userDto);//COUCHE REPRESONTATION
 		
