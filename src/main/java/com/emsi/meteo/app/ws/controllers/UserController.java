@@ -14,6 +14,7 @@ import com.emsi.meteo.app.ws.responses.UserResponse;
 import com.emsi.meteo.app.ws.services.UserService;
 import com.emsi.meteo.app.ws.shared.dto.UserDto;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class UserController {
 	@PostMapping(
 			consumes =  {MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_JSON_VALUE},
 			produces =  {MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest) throws Exception {
+	public ResponseEntity<UserResponse> createUser(@RequestBody @Valid UserRequest userRequest) throws Exception {
 		if (userRequest.getFirstName().isEmpty()
 				||userRequest.getLastName().isEmpty()
 				||userRequest.getEmail().isEmpty()
