@@ -14,6 +14,9 @@ import com.emsi.meteo.app.ws.responses.UserResponse;
 import com.emsi.meteo.app.ws.services.UserService;
 import com.emsi.meteo.app.ws.shared.dto.UserDto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")//localhost:8080/users
 public class UserController {
@@ -31,7 +34,20 @@ public class UserController {
 
 		return new  ResponseEntity<UserResponse>(userResponse,HttpStatus.OK);
 	}
+	@GetMapping(produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+	public List<UserResponse> getAllUsers(@RequestParam(value = "page") int page,
+										  @RequestParam(value = "limit") int limit){
+		List<UserResponse> listUserResponse = new ArrayList<>();
+		List<UserDto> users = userService.getUsers(page,limit);
+		users.forEach(userDto ->{
+			UserResponse userResponse = new UserResponse();
+			BeanUtils.copyProperties(userDto,userResponse);
+			listUserResponse.add(userResponse);
+		} );
 
+
+		return listUserResponse;
+	}
 
 	@PostMapping(
 			consumes =  {MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_JSON_VALUE},

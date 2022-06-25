@@ -15,6 +15,7 @@ import com.emsi.meteo.app.ws.services.UserService;
 import com.emsi.meteo.app.ws.shared.dto.UserDto;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -94,6 +95,12 @@ public class UserServiceImpl implements UserService{
 		if (userEntity == null) throw new UsernameNotFoundException(userId);
 
 		userRepository.delete(userEntity);
+	}
+
+	@Override
+	public List<UserDto> getUsers(int page, int limit) {
+
+		return null;
 	}
 
 	@Override
