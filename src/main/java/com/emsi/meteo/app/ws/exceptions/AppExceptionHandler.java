@@ -18,4 +18,10 @@ public class AppExceptionHandler {
 
         return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    @ExceptionHandler(value = Exception.class)
+    public ResponseEntity<Object> HandlException(Exception exception, WebRequest request){
+        ErrorMessage errorMessage = new ErrorMessage(new Date(),exception.getMessage());
+
+        return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
