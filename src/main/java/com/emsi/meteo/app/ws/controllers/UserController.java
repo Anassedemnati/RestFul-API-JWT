@@ -35,8 +35,8 @@ public class UserController {
 		return new  ResponseEntity<UserResponse>(userResponse,HttpStatus.OK);
 	}
 	@GetMapping(produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-	public List<UserResponse> getAllUsers(@RequestParam(value = "page") int page,
-										  @RequestParam(value = "limit") int limit){
+	public List<UserResponse> getAllUsers(@RequestParam(value = "page",defaultValue = "1") int page,
+										  @RequestParam(value = "limit",defaultValue = "15") int limit){
 		List<UserResponse> listUserResponse = new ArrayList<>();
 		List<UserDto> users = userService.getUsers(page,limit);
 		users.forEach(userDto ->{

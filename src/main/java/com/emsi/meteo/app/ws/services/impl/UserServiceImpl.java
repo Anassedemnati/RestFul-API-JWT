@@ -102,6 +102,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public List<UserDto> getUsers(int page, int limit) {
+		if (page>0)page-=1;
 		List<UserDto> userDtoList = new ArrayList<>();
 		Page<UserEntity> usersPage = userRepository.findAll(PageRequest.of(page, limit));
 		usersPage.getContent().forEach(userEntity -> {
