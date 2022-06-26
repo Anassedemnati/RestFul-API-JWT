@@ -2,6 +2,7 @@ package com.emsi.meteo.app.ws.controllers;
 
 import com.emsi.meteo.app.ws.exceptions.UserException;
 import com.emsi.meteo.app.ws.responses.ErrorMessages;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,7 +58,9 @@ public class UserController {
 		if (userRequest.getFirstName().isEmpty()
 				||userRequest.getLastName().isEmpty()
 		) throw new UserException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
-		UserDto userDto = new UserDto(); 
+		//UserDto userDto = new UserDto();
+		ModelMapper modelMapper = new ModelMapper();
+		UserDto userDto = modelMapper.map(userRequest,UserDto.class);
 		BeanUtils.copyProperties(userRequest, userDto);//COUCHE REPRESONTATION
 		
 		UserDto createUser = userService.createUser(userDto);//COUCHE SERVICE
