@@ -56,8 +56,7 @@ public class UserController {
 	public ResponseEntity<UserResponse> createUser(@RequestBody @Valid UserRequest userRequest) throws Exception {
 		if (userRequest.getFirstName().isEmpty()
 				||userRequest.getLastName().isEmpty()
-				||userRequest.getEmail().isEmpty()
-				||userRequest.getPassword().isEmpty()) throw new UserException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
+		) throw new UserException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 		UserDto userDto = new UserDto(); 
 		BeanUtils.copyProperties(userRequest, userDto);//COUCHE REPRESONTATION
 		
