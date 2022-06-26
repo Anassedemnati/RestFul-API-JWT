@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
+import java.util.List;
 
 @Data
 public class UserRequest {
@@ -24,6 +25,7 @@ public class UserRequest {
 	@NotNull(message = "password should not be NULL !")
 	@Size(min = 8,max = 25,message = "password should be betwen 8 and 25 caracter !")
 	private String password;
-	
+
+	private List<AddressesRequest> addresses;
 
 }
