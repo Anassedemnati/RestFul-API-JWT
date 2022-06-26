@@ -10,17 +10,17 @@ import javax.validation.constraints.Size;
 
 @Data
 public class UserRequest {
-	@NotNull
-	@Size(min = 3)
+	@NotNull(message = "first name should not be NULL !")
+	@Size(min = 3,message = "first name should be more than 3 caracter")
 	private String firstName;
-	@NotNull
-	@Size(min = 3)
+	@NotNull(message = "last name should not be NULL !")
+	@Size(min = 3,message = "last name should be more than 3 caracter")
 	private String lastName;
-	@NotNull
-	@Email
+	@NotNull(message = "email should not be NULL !")
+	@Email(message = "EX test@test.com")
 	private String email;
-	@NotNull
-	@Size(min = 8,max = 25)
+	@NotNull(message = "password should not be NULL !")
+	@Size(min = 8,max = 25,message = "password should be betwen 8 and 25 caracter !")
 	private String password;
 	
 
