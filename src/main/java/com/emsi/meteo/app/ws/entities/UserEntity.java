@@ -1,6 +1,7 @@
 package com.emsi.meteo.app.ws.entities;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
@@ -38,5 +39,7 @@ public class UserEntity implements Serializable {
 	
 	@Column(nullable = false)
 	private Boolean emailVerificationStatus=false;
+	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+	private List<AddresseEntity> addresses;
 
 }
