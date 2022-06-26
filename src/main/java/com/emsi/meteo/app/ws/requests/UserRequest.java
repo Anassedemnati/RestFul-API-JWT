@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Data
 public class UserRequest {
@@ -22,6 +19,8 @@ public class UserRequest {
 	@NotNull(message = "email should not be NULL !")
 	@Email(message = "EX test@test.com")
 	private String email;
+	@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$",
+			message = "password should contains at least eight characters, including at least one number and includes both lower and uppercase letters and special characters, for example #, ?, !.")
 	@NotNull(message = "password should not be NULL !")
 	@Size(min = 8,max = 25,message = "password should be betwen 8 and 25 caracter !")
 	private String password;
