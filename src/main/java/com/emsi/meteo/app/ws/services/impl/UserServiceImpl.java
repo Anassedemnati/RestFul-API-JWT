@@ -1,6 +1,8 @@
 package com.emsi.meteo.app.ws.services.impl;
 
 import com.emsi.meteo.app.ws.shared.Utils;
+import com.emsi.meteo.app.ws.shared.dto.AddressesDto;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +21,7 @@ import com.emsi.meteo.app.ws.shared.dto.UserDto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -34,18 +37,26 @@ public class UserServiceImpl implements UserService{
 	public UserDto createUser(UserDto user) {
 		UserEntity checkUser = userRepository.findByEmail(user.getEmail());
 		if (checkUser!=null) throw new RuntimeException("User already exist ! ");
-		UserEntity userEntity = new UserEntity();
-		
-		BeanUtils.copyProperties(user, userEntity);
+		for (int i = 0; i <user.getAddresses().size() ; i++)
+		{
+			AddressesDto addressesDto = user.getAddresses().get(i);
+			addressesDto.setUser(user);
+			addressesDto.setAddresseId(UUID.randomUUID().toString());
+			user.getAddresses().set(i,addressesDto);
+		}
+		ModelMapper modelMapper = new ModelMapper();
+
+		UserEntity userEntity = modelMapper.map(user,UserEntity.class);
+
+
+
 		userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		userEntity.setUserId(utils.generateStringId(32));
 
-		
 		UserEntity newUser = userRepository.save(userEntity);
 		
-		UserDto userDto = new UserDto();
+		UserDto userDto = modelMapper.map(newUser,UserDto.class);
 
-		BeanUtils.copyProperties(newUser, userDto);
 		
 		return userDto;
 	}
@@ -54,8 +65,10 @@ public class UserServiceImpl implements UserService{
 	public UserDto getUser(String email) {
 		UserEntity userEntity = userRepository.findByEmail(email);
 		if (userEntity == null) throw new UsernameNotFoundException(email);
-		UserDto userDto = new UserDto();
-		BeanUtils.copyProperties(userEntity,userDto);//copier les donne de userEntity to userDto
+
+		ModelMapper modelMapper = new ModelMapper();
+
+		UserDto userDto = modelMapper.map(userEntity,UserDto.class);//copier les donne de userEntity to userDto
 		return userDto;
 	}
 
@@ -66,9 +79,9 @@ public class UserServiceImpl implements UserService{
 
 		if (userEntity == null) throw new UsernameNotFoundException(userId);
 
-		UserDto userDto = new UserDto();
+		ModelMapper modelMapper = new ModelMapper();
 
-		BeanUtils.copyProperties(userEntity,userDto);//copier les donne de userEntity to userDto
+		UserDto userDto = modelMapper.map(userEntity,UserDto.class);//copier les donne de userEntity to userDto
 
 		return userDto;
 	}
@@ -85,9 +98,9 @@ public class UserServiceImpl implements UserService{
 
 		UserEntity userUpdated = userRepository.save(userEntity);
 
-		UserDto user = new UserDto();
+		ModelMapper modelMapper = new ModelMapper();
 
-		BeanUtils.copyProperties(userUpdated,user);//copier les donne de userEntity to userDto
+		UserDto user = modelMapper.map(userUpdated,UserDto.class);//copier les donne de userEntity to userDto
 
 		return user;
 	}
@@ -105,9 +118,9 @@ public class UserServiceImpl implements UserService{
 		if (page>0)page-=1;
 		List<UserDto> userDtoList = new ArrayList<>();
 		Page<UserEntity> usersPage = userRepository.findAll(PageRequest.of(page, limit));
+		ModelMapper modelMapper = new ModelMapper();
 		usersPage.getContent().forEach(userEntity -> {
-			UserDto userDto = new UserDto();
-			BeanUtils.copyProperties(userEntity,userDto);
+			UserDto userDto = modelMapper.map(userEntity,UserDto.class);
 			userDtoList.add(userDto);
 		});
 		return userDtoList;

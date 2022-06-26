@@ -10,10 +10,11 @@ import java.io.Serializable;
 public class AddressesDto implements Serializable {
     private static final long serialVersionUID = -7990827679129560515L;
     private long id;
+    private String addresseId;
     private String city;
     private String country;
     private String street;
-    private String ZipCode;
+    private String zipCode;
     private String type;
     private UserDto user;
 }

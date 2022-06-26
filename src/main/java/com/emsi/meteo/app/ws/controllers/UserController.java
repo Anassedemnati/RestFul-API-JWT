@@ -61,14 +61,12 @@ public class UserController {
 		//UserDto userDto = new UserDto();
 		//BeanUtils.copyProperties(userRequest, userDto);//COUCHE REPRESONTATION
 		ModelMapper modelMapper = new ModelMapper();
+
 		UserDto userDto = modelMapper.map(userRequest,UserDto.class);//COUCHE REPRESONTATION
 
-		
 		UserDto createUser = userService.createUser(userDto);//COUCHE SERVICE
-		
-		UserResponse userResponse = new UserResponse();
-		
-		BeanUtils.copyProperties(createUser, userResponse);
+
+		UserResponse userResponse = modelMapper.map(createUser,UserResponse.class);
 		
 		return new  ResponseEntity<UserResponse>(userResponse,HttpStatus.CREATED) ; // RETOURNER LES INFORMATION VOULU DE LUTULISATEUR avec status 201
 	}

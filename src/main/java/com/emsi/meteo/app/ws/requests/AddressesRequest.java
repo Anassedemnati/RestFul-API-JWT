@@ -14,7 +14,7 @@ public class AddressesRequest {
 
    private String street;
 
-   private String ZipCode;
+   private String zipCode;
 
    private String type;
 }

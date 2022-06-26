@@ -30,8 +30,8 @@ public class AddresseEntity implements Serializable {
 	@Column(nullable = false, length = 120)
 	private String street;
 	
-	@Column(nullable = false,length = 7)
-	private String ZipCode;
+	@Column(nullable = false,length = 8)
+	private String zipCode;
 	
 	@Column(nullable = false,length = 20)
 	private String type;
