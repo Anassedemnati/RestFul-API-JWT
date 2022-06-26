@@ -59,9 +59,10 @@ public class UserController {
 				||userRequest.getLastName().isEmpty()
 		) throw new UserException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 		//UserDto userDto = new UserDto();
+		//BeanUtils.copyProperties(userRequest, userDto);//COUCHE REPRESONTATION
 		ModelMapper modelMapper = new ModelMapper();
-		UserDto userDto = modelMapper.map(userRequest,UserDto.class);
-		BeanUtils.copyProperties(userRequest, userDto);//COUCHE REPRESONTATION
+		UserDto userDto = modelMapper.map(userRequest,UserDto.class);//COUCHE REPRESONTATION
+
 		
 		UserDto createUser = userService.createUser(userDto);//COUCHE SERVICE
 		
