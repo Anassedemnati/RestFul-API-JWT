@@ -1,10 +1,7 @@
 package com.emsi.meteo.app.ws.entities;
 
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,7 +15,7 @@ public class UserEntity implements Serializable {
 	private static final long serialVersionUID = -2516375549986814526L;
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;//PRAVATE ID IN DATA BASE
 	
 	@Column(nullable = false)
