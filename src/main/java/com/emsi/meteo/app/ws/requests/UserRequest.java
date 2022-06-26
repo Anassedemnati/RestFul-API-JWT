@@ -27,5 +27,6 @@ public class UserRequest {
 	private String password;
 
 	private List<AddressesRequest> addresses;
+	private ContactRequest contact;
 
 }

@@ -11,5 +11,6 @@ public class UserResponse {
 	private String lastName;
 	private String email;
 	private List<AddressesResponse> addresses;
+	private ContactResponse contact;
 
 }
