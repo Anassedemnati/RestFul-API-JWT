@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 
-@Entity @Data
+@Entity(name = "contacts") @Data
 public class ContactEntity implements Serializable {
     private static final long serialVersionUID = -2516275549986276526L;
     @Id
