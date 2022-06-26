@@ -42,5 +42,7 @@ public class UserEntity implements Serializable {
 
 	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
 	private List<AddresseEntity> addresses;
+	@OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
+	private ContactEntity contact;
 
 }

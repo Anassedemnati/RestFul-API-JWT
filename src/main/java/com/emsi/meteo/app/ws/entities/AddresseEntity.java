@@ -18,7 +18,7 @@ public class AddresseEntity implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;//PRAVATE ID IN DATA BASE
 	
-	@Column(nullable = false)
+	@Column(nullable = false,length = 30)
 	private String addresseId;//PUBLIC ID IN API
 	
 	@Column(nullable = false, length = 20)
