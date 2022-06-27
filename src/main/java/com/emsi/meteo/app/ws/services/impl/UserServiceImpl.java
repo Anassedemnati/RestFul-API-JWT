@@ -3,11 +3,9 @@ package com.emsi.meteo.app.ws.services.impl;
 import com.emsi.meteo.app.ws.shared.Utils;
 import com.emsi.meteo.app.ws.shared.dto.AddressesDto;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,7 +19,6 @@ import com.emsi.meteo.app.ws.shared.dto.UserDto;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 
 @Service
@@ -118,12 +115,17 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public List<UserDto> getUsers(int page, int limit) {
+	public List<UserDto> getUsers(int page, int limit, String kw) {
 		if (page>0)page-=1;
 		List<UserDto> userDtoList = new ArrayList<>();
-		Page<UserEntity> usersPage = userRepository.findAll(PageRequest.of(page, limit));
-		ModelMapper modelMapper = new ModelMapper();
+		Page<UserEntity> usersPage;
+		if (kw.isEmpty()){
+			usersPage = userRepository.findAllUsers(PageRequest.of(page, limit));
+		}else {
+			usersPage = userRepository.findByFirstNameAndLastName(PageRequest.of(page, limit),kw);
+		}
 		usersPage.getContent().forEach(userEntity -> {
+			ModelMapper modelMapper = new ModelMapper();
 			UserDto userDto = modelMapper.map(userEntity,UserDto.class);
 			userDtoList.add(userDto);
 		});

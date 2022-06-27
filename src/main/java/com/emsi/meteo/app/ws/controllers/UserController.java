@@ -3,13 +3,11 @@ package com.emsi.meteo.app.ws.controllers;
 import com.emsi.meteo.app.ws.exceptions.UserException;
 import com.emsi.meteo.app.ws.responses.ErrorMessages;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import com.emsi.meteo.app.ws.requests.UserRequest;
 import com.emsi.meteo.app.ws.responses.UserResponse;
 import com.emsi.meteo.app.ws.services.UserService;
@@ -30,24 +28,22 @@ public class UserController {
 
 		UserDto userDto = userService.getUserByUserId(id);
 
-		UserResponse userResponse = new UserResponse();
-
-		BeanUtils.copyProperties(userDto, userResponse);
+		ModelMapper modelMapper = new ModelMapper();
+		UserResponse userResponse = modelMapper.map(userDto,UserResponse.class);
 
 		return new  ResponseEntity<UserResponse>(userResponse,HttpStatus.OK);
 	}
 	@GetMapping(produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
 	public List<UserResponse> getAllUsers(@RequestParam(value = "page",defaultValue = "1") int page,
-										  @RequestParam(value = "limit",defaultValue = "15") int limit){
+										  @RequestParam(value = "limit",defaultValue = "15") int limit,
+										  @RequestParam(value = "keyword",defaultValue = "")String keyword){
 		List<UserResponse> listUserResponse = new ArrayList<>();
-		List<UserDto> users = userService.getUsers(page,limit);
+		List<UserDto> users = userService.getUsers(page,limit,keyword);
 		users.forEach(userDto ->{
-			UserResponse userResponse = new UserResponse();
-			BeanUtils.copyProperties(userDto,userResponse);
+			ModelMapper modelMapper = new ModelMapper();
+			UserResponse userResponse = modelMapper.map(userDto,UserResponse.class);
 			listUserResponse.add(userResponse);
 		} );
-
-
 		return listUserResponse;
 	}
 
@@ -75,15 +71,13 @@ public class UserController {
 			consumes =  {MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_JSON_VALUE},
 			produces =  {MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<UserResponse> updateUser(@PathVariable String id,@RequestBody UserRequest userRequest) {
-		UserDto userDto = new UserDto();
-
-		BeanUtils.copyProperties(userRequest, userDto);//COUCHE REPRESONTATION
+		ModelMapper modelMapper = new ModelMapper();
+		UserDto userDto =modelMapper.map(userRequest,UserDto.class);//COUCHE REPRESONTATION
 
 		UserDto updateUser = userService.updateUser(id,userDto);//COUCHE SERVICE
 
-		UserResponse userResponse = new UserResponse();
 
-		BeanUtils.copyProperties(updateUser, userResponse);
+		UserResponse userResponse = modelMapper.map(updateUser,UserResponse.class);
 
 		return new  ResponseEntity<UserResponse>(userResponse,HttpStatus.ACCEPTED); // RETOURNER LES INFORMATION VOULU DE LUTULISATEUR avec status 202
 	}

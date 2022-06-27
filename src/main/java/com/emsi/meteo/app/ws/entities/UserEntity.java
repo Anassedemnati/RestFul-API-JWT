@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 @Entity(name = "users")
-@Data @AllArgsConstructor @NoArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor @NoArgsConstructor
 public class UserEntity implements Serializable {
 	
 	private static final long serialVersionUID = -2516375549986814526L;

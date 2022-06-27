@@ -12,5 +12,7 @@ public interface UserService extends UserDetailsService {
 	UserDto getUserByUserId(String id) throws UsernameNotFoundException;
 	UserDto updateUser(String userId,UserDto userDto);
 	void deleteUser(String userId);
-	List<UserDto> getUsers(int page, int limit);
+
+
+    List<UserDto> getUsers(int page, int limit, String kw);
 }
