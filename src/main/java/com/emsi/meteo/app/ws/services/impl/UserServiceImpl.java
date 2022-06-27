@@ -115,14 +115,14 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public List<UserDto> getUsers(int page, int limit, String kw) {
+	public List<UserDto> getUsers(int page, int limit, String kw,int status) {
 		if (page>0)page-=1;
 		List<UserDto> userDtoList = new ArrayList<>();
 		Page<UserEntity> usersPage;
 		if (kw.isEmpty()){
 			usersPage = userRepository.findAllUsers(PageRequest.of(page, limit));
 		}else {
-			usersPage = userRepository.findByFirstNameAndLastName(PageRequest.of(page, limit),kw);
+			usersPage = userRepository.findByFirstNameAndLastName(PageRequest.of(page, limit),kw,status);
 		}
 		usersPage.getContent().forEach(userEntity -> {
 			ModelMapper modelMapper = new ModelMapper();

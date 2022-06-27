@@ -36,9 +36,10 @@ public class UserController {
 	@GetMapping(produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
 	public List<UserResponse> getAllUsers(@RequestParam(value = "page",defaultValue = "1") int page,
 										  @RequestParam(value = "limit",defaultValue = "15") int limit,
-										  @RequestParam(value = "keyword",defaultValue = "")String keyword){
+										  @RequestParam(value = "keyword",defaultValue = "")String keyword,
+										  @RequestParam(value = "status",defaultValue = "1")int status){
 		List<UserResponse> listUserResponse = new ArrayList<>();
-		List<UserDto> users = userService.getUsers(page,limit,keyword);
+		List<UserDto> users = userService.getUsers(page,limit,keyword,status);
 		users.forEach(userDto ->{
 			ModelMapper modelMapper = new ModelMapper();
 			UserResponse userResponse = modelMapper.map(userDto,UserResponse.class);
