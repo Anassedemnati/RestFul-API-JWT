@@ -1,7 +1,9 @@
 package com.emsi.meteo.app.ws.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
@@ -9,7 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-@Entity(name = "user")
+@Entity(name = "users")
 @Data @AllArgsConstructor @NoArgsConstructor
 public class UserEntity implements Serializable {
 	
@@ -44,5 +46,9 @@ public class UserEntity implements Serializable {
 	private List<AddresseEntity> addresses;
 	@OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
 	private ContactEntity contact;
+	@ManyToMany(fetch = FetchType.LAZY,
+	cascade = CascadeType.ALL,
+	mappedBy = "users")
+	private Set<GroupEntity> groups = new HashSet<>();
 
 }

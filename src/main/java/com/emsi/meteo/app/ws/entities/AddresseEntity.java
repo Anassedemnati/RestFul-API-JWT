@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 
-@Entity(name = "addresse")
+@Entity(name = "addresses")
 @Data @AllArgsConstructor @NoArgsConstructor
 public class AddresseEntity implements Serializable {
 	
