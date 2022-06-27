@@ -42,13 +42,11 @@ public class UserEntity implements Serializable {
 	@Column(nullable = false)
 	private Boolean emailVerificationStatus=false;
 
-	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
 	private List<AddresseEntity> addresses;
-	@OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "user",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
 	private ContactEntity contact;
-	@ManyToMany(fetch = FetchType.LAZY,
-	cascade = CascadeType.ALL,
-	mappedBy = "users")
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "users")
 	private Set<GroupEntity> groups = new HashSet<>();
 
 }

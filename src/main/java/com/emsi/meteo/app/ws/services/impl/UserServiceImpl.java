@@ -72,6 +72,7 @@ public class UserServiceImpl implements UserService{
 		ModelMapper modelMapper = new ModelMapper();
 
 		UserDto userDto = modelMapper.map(userEntity,UserDto.class);//copier les donne de userEntity to userDto
+
 		return userDto;
 	}
 
