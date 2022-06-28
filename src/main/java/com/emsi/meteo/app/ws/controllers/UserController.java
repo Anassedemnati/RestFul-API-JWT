@@ -16,7 +16,7 @@ import com.emsi.meteo.app.ws.shared.dto.UserDto;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-
+@CrossOrigin(origins = "*") //autorize all client on the methods of controller
 @RestController
 @RequestMapping("/users")//localhost:8080/users
 public class UserController {
@@ -33,6 +33,8 @@ public class UserController {
 
 		return new  ResponseEntity<UserResponse>(userResponse,HttpStatus.OK);
 	}
+	//@CrossOrigin(origins = "*") autorize all client in this method
+	//@CrossOrigin(origins = {"http://localhost:4200","http://localhost:4000"})
 	@GetMapping(produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
 	public List<UserResponse> getAllUsers(@RequestParam(value = "page",defaultValue = "1") int page,
 										  @RequestParam(value = "limit",defaultValue = "15") int limit,
