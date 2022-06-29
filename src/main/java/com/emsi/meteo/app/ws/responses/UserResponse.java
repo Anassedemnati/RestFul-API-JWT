@@ -10,6 +10,7 @@ public class UserResponse {
 	private String firstName;
 	private String lastName;
 	private String email;
+	private Boolean isAdmin;
 	private List<AddressesResponse> addresses;
 	private ContactResponse contact;
 

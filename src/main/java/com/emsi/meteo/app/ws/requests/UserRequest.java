@@ -20,6 +20,7 @@ public class UserRequest {
 	@NotNull(message = "email should not be NULL !")
 	@Email(message = "EX test@test.com")
 	private String email;
+	private Boolean isAdmin;
 	@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$",
 			message = "password should contains at least eight characters, including at least one number and includes both lower and uppercase letters and special characters, for example #, ?, !.")
 	@NotNull(message = "password should not be NULL !")
