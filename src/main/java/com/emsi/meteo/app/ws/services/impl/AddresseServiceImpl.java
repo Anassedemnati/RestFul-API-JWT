@@ -6,7 +6,9 @@ import com.emsi.meteo.app.ws.repositorys.AddresseRepository;
 
 import com.emsi.meteo.app.ws.repositorys.UserRepository;
 import com.emsi.meteo.app.ws.services.AddresseService;
+import com.emsi.meteo.app.ws.shared.Utils;
 import com.emsi.meteo.app.ws.shared.dto.AddressesDto;
+import com.emsi.meteo.app.ws.shared.dto.UserDto;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -20,6 +22,7 @@ import java.util.List;
 public class AddresseServiceImpl implements AddresseService {
     AddresseRepository addresseRepository;
     UserRepository userRepository;
+    Utils utils;
     @Override
     public List<AddressesDto> getAllAddresses(String email) {
         UserEntity currentUser = userRepository.findByEmail(email);
@@ -32,6 +35,21 @@ public class AddresseServiceImpl implements AddresseService {
         List<AddressesDto> addressesDto = new ModelMapper().map(addresseEntityList, listType);
 
         return addressesDto;
+    }
+
+    @Override
+    public AddressesDto createAddress(AddressesDto address, String email) {
+        UserEntity currentUser=userRepository.findByEmail(email);
+        ModelMapper modelMapper=new ModelMapper();
+        UserDto userDto=modelMapper.map(currentUser,UserDto.class);
+
+        address.setAddresseId(utils.generateStringId(30));
+        address.setUser(userDto);
+
+        AddresseEntity addressEntity=modelMapper.map(address,AddresseEntity.class);
+        AddresseEntity newAddress=addresseRepository.save(addressEntity);
+        AddressesDto addressDto=modelMapper.map(newAddress,AddressesDto.class);
+        return addressDto;
     }
 
 }

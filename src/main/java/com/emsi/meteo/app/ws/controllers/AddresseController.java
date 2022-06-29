@@ -1,5 +1,6 @@
 package com.emsi.meteo.app.ws.controllers;
 
+import com.emsi.meteo.app.ws.requests.AddressesRequest;
 import com.emsi.meteo.app.ws.responses.AddressesResponse;
 import com.emsi.meteo.app.ws.services.AddresseService;
 import com.emsi.meteo.app.ws.shared.dto.AddressesDto;
@@ -7,10 +8,9 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Type;
 import java.security.Principal;
@@ -35,4 +35,21 @@ public class AddresseController {
 
         return new  ResponseEntity<List<AddressesResponse>>(addressesResponseList, HttpStatus.OK);
     }
+    @PostMapping(
+            consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity storeAddresse(@RequestBody AddressesRequest addressRequest, Principal principal){
+
+        ModelMapper modelMapper=new ModelMapper();
+
+        AddressesDto addressDto=modelMapper.map(addressRequest,AddressesDto.class);
+        AddressesDto createAddress=addresseService.createAddress(addressDto,principal.getName());
+
+        AddressesResponse newAddress=modelMapper.map(createAddress,AddressesResponse.class);
+
+        return new ResponseEntity(newAddress,HttpStatus.CREATED);
+
+    }
+
+
 }

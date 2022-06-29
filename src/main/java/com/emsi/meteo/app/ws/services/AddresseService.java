@@ -7,4 +7,5 @@ import java.util.List;
 public interface AddresseService {
     List<AddressesDto> getAllAddresses(String email);
 
+    AddressesDto createAddress(AddressesDto addressDto, String name);
 }
