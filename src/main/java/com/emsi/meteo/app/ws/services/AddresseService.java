@@ -5,6 +5,6 @@ import com.emsi.meteo.app.ws.shared.dto.AddressesDto;
 import java.util.List;
 
 public interface AddresseService {
-    List<AddressesDto> getAllAddresses();
+    List<AddressesDto> getAllAddresses(String email);
 
 }

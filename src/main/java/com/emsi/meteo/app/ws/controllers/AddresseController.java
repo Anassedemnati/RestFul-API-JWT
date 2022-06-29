@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.Type;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -23,8 +24,11 @@ public class AddresseController {
     AddresseService addresseService;
 
     @GetMapping
-    public ResponseEntity<List<AddressesResponse>> getAddresses(){
-        List<AddressesDto> allAddresses = addresseService.getAllAddresses();
+    public ResponseEntity<List<AddressesResponse>> getAddresses(Principal principal){
+        if (principal==null || principal.getName().isBlank()) {
+            throw new RuntimeException("Principal null or blank!");
+        }
+        List<AddressesDto> allAddresses = addresseService.getAllAddresses(principal.getName());
 
         Type listType = new TypeToken<List<AddressesResponse>>() {}.getType();
         List<AddressesResponse> addressesResponseList = new ModelMapper().map(allAddresses, listType);
