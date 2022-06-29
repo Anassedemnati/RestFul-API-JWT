@@ -8,4 +8,8 @@ public interface AddresseService {
     List<AddressesDto> getAllAddresses(String email);
 
     AddressesDto createAddress(AddressesDto addressDto, String name);
+
+    AddressesDto getAddress(String addressId);
+
+    void deleteAddress(String addressId);
 }

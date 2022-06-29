@@ -35,6 +35,7 @@ public class AddresseController {
 
         return new  ResponseEntity<List<AddressesResponse>>(addressesResponseList, HttpStatus.OK);
     }
+
     @PostMapping(
             consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
@@ -50,6 +51,32 @@ public class AddresseController {
         return new ResponseEntity(newAddress,HttpStatus.CREATED);
 
     }
+    @GetMapping("/{id}")
+    public  ResponseEntity<AddressesResponse> getOneAddresse(@PathVariable(name="id") String addressId) {
+
+        AddressesDto addressDto = addresseService.getAddress(addressId);
+
+        ModelMapper modelMapper = new ModelMapper();
+
+        AddressesResponse addressResponse = modelMapper.map(addressDto, AddressesResponse.class);
+
+        return new ResponseEntity<AddressesResponse>(addressResponse, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updatreAddresse(@PathVariable(name="id") String addressId) {
+        return new ResponseEntity<>("update addresses", HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteAddresse(@PathVariable(name="id") String addressId) {
+
+        addresseService.deleteAddress(addressId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
 
 
 }

@@ -52,4 +52,25 @@ public class AddresseServiceImpl implements AddresseService {
         return addressDto;
     }
 
+    @Override
+    public AddressesDto getAddress(String addressId) {
+        AddresseEntity addressEntity = addresseRepository.findByAddresseId(addressId);
+
+        ModelMapper modelMapper = new ModelMapper();
+
+        AddressesDto addressDto = modelMapper.map(addressEntity, AddressesDto.class);
+
+        return addressDto;
+    }
+
+    @Override
+    public void deleteAddress(String addressId) {
+        AddresseEntity address = addresseRepository.findByAddresseId(addressId);
+
+        if(address == null) throw new RuntimeException("Address not found");
+
+        addresseRepository.delete(address);
+
+    }
+
 }

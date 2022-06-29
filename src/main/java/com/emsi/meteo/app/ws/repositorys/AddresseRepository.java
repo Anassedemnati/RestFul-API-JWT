@@ -12,6 +12,7 @@ import java.util.List;
 public interface AddresseRepository extends JpaRepository<AddresseEntity,Long> {
 
     List<AddresseEntity> findByUser(UserEntity currentUser);
+    AddresseEntity findByAddresseId(String addresseId);
 
 
 }
