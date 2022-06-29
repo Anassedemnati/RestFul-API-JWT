@@ -54,22 +54,25 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                                             Authentication auth) throws IOException, ServletException {
 
         String userName = ((User) auth.getPrincipal()).getUsername();
-
-
-        String token = Jwts.builder()
-                .setSubject(userName)
-                .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS512, SecurityConstants.TOKEN_SECRET )
-                .compact();
         //recupere lobjet de class userServiceImpl avec SpringApplicationContext
         UserService userService = (UserService) SpringApplicationContext.getBean("userServiceImpl");
 
         //en doit utuliser le context pour utuliser un objet nimport ou dans lapplication
-         UserDto userDto= userService.getUser(userName); //recuperation de l'utilisateur avec avce service
+        UserDto userDto= userService.getUser(userName); //recuperation de l'utilisateur avec avce service
+
+        String token = Jwts.builder()
+                .setSubject(userName)
+                .claim("id",userDto.getUserId())
+                .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
+                .signWith(SignatureAlgorithm.HS512, SecurityConstants.TOKEN_SECRET )
+                .compact();
+
 
         res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
         //send public user id like response
         res.addHeader("user_id", userDto.getUserId());
+        //Personnaliser le Retour Token JWT dans le body
+        res.getWriter().write("{\"token\": \"" + token + "\", \"id\": \""+ userDto.getUserId() + "\"}");
 
     }
 
