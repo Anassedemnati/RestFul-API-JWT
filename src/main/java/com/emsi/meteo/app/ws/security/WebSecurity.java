@@ -27,6 +27,13 @@ protected void configure(HttpSecurity http) throws Exception{
             .csrf().disable()//DESACTIVE CSRF IN FORMS CUZ WE HAVE API
             .authorizeRequests()
             .antMatchers(HttpMethod.POST,SecurityConstants.SIGN_UP_URL).permitAll()//ALLOW ONLY HTTP POST ON /USERS
+            .antMatchers( "/webjars/**",
+                    "swagger-ui/index.html**",
+                    "/v3/api-docs/**",
+                    "api-docs/",
+                    "swagger-ui.html",
+                    "/api-docs.yaml",
+                    "/swagger-resources/**").permitAll()
             .anyRequest().authenticated()
             .and().addFilter(getAuthenticationFilter())
             .addFilter(new AuthorizationFilter(authenticationManager()))
